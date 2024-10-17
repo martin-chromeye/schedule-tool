@@ -1,15 +1,16 @@
 import React from "react";
 
-import styles from "./Header.module.scss";
 import { Wrapper } from "../Wrapper";
 
-type Props = {};
+import styles from "./Header.module.scss";
 
-const Header = (props: Props) => {
+type Props = { heading: string };
+
+const Header = ({ heading }: Props) => {
   return (
     <header className={styles.header}>
       <Wrapper className={styles.wrapper}>
-        <h1 className={styles.heading}>Create new Schedule</h1>
+        <h1 className={styles.heading}>{heading}</h1>
       </Wrapper>
     </header>
   );

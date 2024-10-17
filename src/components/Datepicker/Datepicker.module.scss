@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+  gap: var(--size-m);
+  flex-wrap: wrap;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Ensure items are centered */
+}
+
+.label {
+  font-size: calc(var(--size-l) + 2px);
+  margin: 0;
+  padding-bottom: calc(var(--size-l) + 2px);
+
+  &Secondary {
+    align-self: flex-end;
+    padding-bottom: calc(var(--size-l) - 2px);
+  }
+}
+
+.datepicker {
+  padding: var(--size-m) var(--size-xxl);
+  width: 160px;
+  font-size: calc(var(--size-l) + 2px);
+  line-height: 1.21;
+}

@@ -1,8 +1,9 @@
 import React, { ReactNode } from "react";
 
 
-import styles from "./MainContainer.module.scss";
 import { Header } from "../Header";
+
+import styles from "./MainContainer.module.scss";
 
 type Props = {
   children: ReactNode;
@@ -11,7 +12,7 @@ type Props = {
 const MainContainer = ({ children }: Props) => {
   return (
     <div className={styles.container}>
-      <Header />
+      <Header heading="Create new Schedule"/>
       <main className={styles.main}>{children}</main>
     </div>
   );
