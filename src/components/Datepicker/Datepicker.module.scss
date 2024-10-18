@@ -2,6 +2,21 @@
   display: flex;
   gap: var(--size-m);
   flex-wrap: wrap;
+  position: relative;
+  padding-bottom: calc(var(--size-m) + 2px);
+
+  &::after {
+    position: absolute;
+    content: "";
+    width: calc(100% + 44px);
+    bottom: 0;
+    left: -44px; //Wrappper difference
+    border-bottom: 1px solid var(--color-gray-3);
+  }
+
+  @media (max-width: 460px) {
+    justify-content: space-between;
+  }
 }
 
 .wrapper {
@@ -26,4 +41,9 @@
   width: 160px;
   font-size: calc(var(--size-l) + 2px);
   line-height: 1.21;
+
+  @media (max-width: 360px) {
+    width: 100px;
+    padding: var(--size-s) var(--size-xl);
+  }
 }

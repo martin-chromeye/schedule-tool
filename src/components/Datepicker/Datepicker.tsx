@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker";
 
 import styles from "./Datepicker.module.scss";
 import { addClass } from "../../utils/addClass";
+import { calculateDayDifference } from "../../utils/calculateDayDifference";
 
 type Props = {
   startDate: Date | undefined;
@@ -17,18 +18,6 @@ const Datepicker = ({
   endDate,
   setEndDate,
 }: Props) => {
-  const calculateDayDifference = (
-    startDate: Date | undefined,
-    endDate: Date | undefined
-  ): number | null => {
-    if (startDate && endDate) {
-      const diffInTime = endDate.getTime() - startDate.getTime(); // Difference in milliseconds
-      const diffInDays = diffInTime / (1000 * 3600 * 24); // Convert to days
-      return Math.ceil(diffInDays); // Round up to nearest full day
-    }
-    return null;
-  };
-
   const dayDifference = calculateDayDifference(startDate, endDate);
 
   return (

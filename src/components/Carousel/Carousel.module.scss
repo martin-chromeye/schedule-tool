@@ -1,0 +1,22 @@
+.container {
+  position: relative;
+  margin-top: calc(var(--size-xl) + var(--size-xs));
+}
+
+.carouselActions {
+  position: absolute;
+  top: -58px; //calc from arrows height + m-top container + p-bottom of datepicke
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 10;
+}
+
+.carouselBtn {
+  width: calc(var(--size-l) + 2px);
+  aspect-ratio: 1/1;
+  flex-shrink: 0;
+  fill: var(--color-black);
+  cursor: pointer;
+}

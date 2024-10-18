@@ -1,5 +1,8 @@
 .header {
   margin-block: 44px;
+  @media (max-width: 1024px) {
+    margin-block: var(--size-xl);
+  }
 }
 
 .heading {
