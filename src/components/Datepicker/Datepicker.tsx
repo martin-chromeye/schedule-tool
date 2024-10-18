@@ -20,6 +20,23 @@ const Datepicker = ({
 }: Props) => {
   const dayDifference = calculateDayDifference(startDate, endDate);
 
+  const handleStartDate = (date: Date | null) => {
+    if (date) {
+      setStartDate(date);
+
+      // If both dates were previously set, calculate new endDate
+      if (startDate && endDate) {
+        const previousDayDifference =
+          calculateDayDifference(startDate, endDate) || 0;
+        const newEndDate = new Date(date);
+        newEndDate.setDate(newEndDate.getDate() + previousDayDifference - 1);
+        setEndDate(newEndDate);
+      }
+    } else {
+      setStartDate(undefined);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
@@ -28,13 +45,13 @@ const Datepicker = ({
           selected={startDate}
           id="start-date"
           className={styles.datepicker}
-          onChange={(date: Date | null) => setStartDate(date || undefined)}
+          onChange={(date: Date | null) => handleStartDate(date)}
           selectsStart
           startDate={startDate}
           endDate={endDate}
           placeholderText=""
           dateFormat="dd.MM.yyyy"
-          isClearable={startDate ? true : false}
+          isClearable={!!startDate}
           maxDate={endDate} // Restrict start date to be before or on the end date
         />
       </div>
@@ -51,7 +68,7 @@ const Datepicker = ({
           minDate={startDate} // Restrict end date to be after or on the start date
           placeholderText=""
           dateFormat="dd.MM.yyyy"
-          isClearable={endDate ? true : false}
+          isClearable={!!endDate}
         />
       </div>
       {dayDifference !== null && (

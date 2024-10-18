@@ -3,10 +3,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
-import { Icon } from "../Icon";
-import styles from "./Carousel.module.scss";
 import { addClass } from "../../utils/addClass";
 import { Swiper as SwiperType } from "swiper";
+import { Icon } from "../Icon";
+
+import styles from "./Carousel.module.scss";
 
 type Props = {
   slides: number;
@@ -21,7 +22,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false);
 
   const handleNext = () => {
-    if (isNextDisabled) return; 
+    if (isNextDisabled) return;
 
     const newStartIndex = startIndex + 7; // Move by 7 for the next week
     if (newStartIndex < slides) {
@@ -101,6 +102,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
       <Swiper
         modules={[Navigation]}
         onSwiper={setSwiperInstance}
+        allowTouchMove={false}
         navigation={{
           nextEl: ".js-swiper-button-next",
           prevEl: ".js-swiper-button-prev",
