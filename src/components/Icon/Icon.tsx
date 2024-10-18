@@ -5,10 +5,15 @@ import iconSet from "./selection.json";
 type Props = {
   name: string;
   className?: string;
+  onClick?: () => void;
 };
 
-const Icon = ({ name, className = "" }: Props) => {
-  return <IcomoonReact className={className} iconSet={iconSet} icon={name} />;
+const Icon = ({ name, className = "", onClick }: Props) => {
+  return (
+    <div className={className} onClick={onClick}>
+      <IcomoonReact iconSet={iconSet} icon={name} />
+    </div>
+  );
 };
 
 export default Icon;

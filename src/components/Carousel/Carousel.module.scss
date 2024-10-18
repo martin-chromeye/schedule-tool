@@ -20,3 +20,8 @@
   fill: var(--color-black);
   cursor: pointer;
 }
+
+.disabled {
+  opacity: 30%;
+  pointer-events: none;
+}

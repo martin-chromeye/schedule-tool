@@ -5,6 +5,10 @@
   position: relative;
   padding-bottom: calc(var(--size-m) + 2px);
 
+  :global(.react-datepicker-popper) {
+    z-index: 2;
+  }
+
   &::after {
     position: absolute;
     content: "";
