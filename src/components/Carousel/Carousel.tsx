@@ -8,6 +8,7 @@ import { Swiper as SwiperType } from "swiper";
 import { Icon } from "../Icon";
 
 import styles from "./Carousel.module.scss";
+import { Card } from "../Card";
 
 type Props = {
   slides: number;
@@ -21,31 +22,32 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [isPrevDisabled, setIsPrevDisabled] = useState<boolean>(true);
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false);
 
+  // State to store times for each day
+  const [times, setTimes] = useState<{ [key: string]: string[] }>({});
+
   const handleNext = () => {
     if (isNextDisabled) return;
-
     const newStartIndex = startIndex + 7; // Move by 7 for the next week
     if (newStartIndex < slides) {
       setStartIndex(newStartIndex);
-      swiperInstance?.slideTo(newStartIndex); // Move to the new index
+      swiperInstance?.slideTo(newStartIndex);
     } else {
-      const lastIndex = Math.max(0, slides - 7); // Last available index
+      const lastIndex = Math.max(0, slides - 7);
       setStartIndex(lastIndex);
-      swiperInstance?.slideTo(lastIndex); // Move to the last available slides
+      swiperInstance?.slideTo(lastIndex);
     }
   };
 
   const handlePrev = () => {
-    if (isPrevDisabled) return; // Prevent action if disabled
+    if (isPrevDisabled) return;
 
     let newStartIndex = 0;
 
     if (isNextDisabled) {
-      newStartIndex = slides - 7 - 7; // Solution to workaroung starting index
+      newStartIndex = slides - 7 - 7;
     } else {
-      newStartIndex = Math.max(startIndex - 7, 0); // Always move back 7 slides unless we go below 0
+      newStartIndex = Math.max(startIndex - 7, 0);
     }
-
     setStartIndex(newStartIndex);
     swiperInstance?.slideTo(newStartIndex);
   };
@@ -58,18 +60,6 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     // Update the disabled state based on current startIndex and slides
     setIsPrevDisabled(true);
     setIsNextDisabled(slides <= 7);
-
-    if (endDate) {
-      const newSlides = Math.max(
-        0,
-        (endDate.getTime() - (startDate ? startDate.getTime() : 0)) /
-          (1000 * 60 * 60 * 24) +
-          1
-      );
-      if (newSlides > slides) {
-        setIsNextDisabled(false);
-      }
-    }
   }, [startDate, endDate, swiperInstance, slides]);
 
   useEffect(() => {
@@ -77,9 +67,23 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     setIsNextDisabled(startIndex + 7 >= slides);
   }, [startIndex, slides]);
 
+  // Generate an array of dates between startDate and endDate
+  const dateArray = () => {
+    if (!startDate || !endDate) return [];
+    const dates = [];
+    let currentDate = new Date(startDate);
+    while (currentDate <= endDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
+  };
+
+  const dates = dateArray();
+
   return (
     <section className={styles.container}>
-      {slides > 7 ? (
+      {slides > 7 && (
         <div className={styles.carouselActions}>
           <Icon
             className={`${addClass(
@@ -98,7 +102,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
             onClick={handleNext}
           />
         </div>
-      ) : null}
+      )}
       <Swiper
         modules={[Navigation]}
         onSwiper={setSwiperInstance}
@@ -107,17 +111,28 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
           nextEl: ".js-swiper-button-next",
           prevEl: ".js-swiper-button-prev",
         }}
-        spaceBetween={50}
+        spaceBetween={12}
         slidesPerView={Math.min(slides, 7)}
         className="carousel js-carousel"
       >
-        {Array.from({ length: slides }).map((_, index) => (
-          <SwiperSlide key={index} className="swiper-slide">
-            <div className="empty-slide-content">
-              <span>Day {index + 1}</span>
-            </div>
-          </SwiperSlide>
-        ))}
+        {dates.map((date, index) => {
+          const dateKey = date.toISOString().split("T")[0]; // Key for storing time
+          const formattedDate = date.toLocaleDateString("en-GB"); // Format: DD.MM.YYYY
+          const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
+          const dayTimes = times[dateKey] || []; // Get the stored times for this date
+
+          return (
+            <SwiperSlide key={index}>
+              <Card
+                dayOfWeek={dayOfWeek}
+                date={formattedDate}
+                dayTimes={dayTimes}
+                setTimes={setTimes}
+                dateKey={dateKey}
+              />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </section>
   );
