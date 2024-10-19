@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-
 import styles from "./Card.module.scss";
+import { addClass } from "../../utils/addClass";
 
 type Props = {
   dayOfWeek: string;
@@ -16,6 +16,7 @@ type Props = {
 
 const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null); // State for hovered card
   const [tempTime, setTempTime] = useState<string | null>(null); // Temporary state for input
 
   const handleTimeChange = (dateKey: string, time: string) => {
@@ -49,7 +50,6 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
       [dateKey]: !prev[dateKey],
     }));
     if (!showInput[dateKey]) {
-      // If opening input, clear the temporary time
       setTempTime(null);
     }
   };
@@ -62,33 +62,54 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
 
   return (
     <div className={styles.card}>
-      <h3>{dayOfWeek}</h3>
-      <p>{date}</p>
-      <div className={styles.cardWrapper}></div>
-      {dayTimes.length > 0 && (
-        <div>
-          {dayTimes.map((time, i) => (
-            <div key={i}>
-              <span>{time}</span>
-              <button onClick={() => handleRemoveTime(dateKey, time)}>
-                Remove
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-      {showInput[dateKey] ? (
-        <>
-          <input
-            type="time"
-            value={tempTime || ""}
-            onChange={handleInputChange}
-            onBlur={() => handleBlur(dateKey)} // Save time on blur
-          />
-        </>
-      ) : (
-        <button onClick={() => toggleInput(dateKey)}>Add time</button>
-      )}
+      <div className={styles.header}>
+        <h3 className={addClass(styles.heading, styles.headingPrimary)}>
+          {dayOfWeek}
+        </h3>
+        <p className={addClass(styles.heading, styles.headingSecondary)}>
+          {date}
+        </p>
+      </div>
+      <div
+        className={addClass(
+          styles.cardWrapper,
+          hoveredCard === dateKey ? styles.cardWrapperHovered : ""
+        )}
+        onMouseEnter={() => setHoveredCard(dateKey)}
+        onMouseLeave={() => setHoveredCard(null)}
+      >
+        {dayTimes.length > 0 && (
+          <div>
+            {dayTimes.map((time, i) => (
+              <div key={i}>
+                <span>{time}</span>
+                <button onClick={() => handleRemoveTime(dateKey, time)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+        {showInput[dateKey] ? (
+          <>
+            <input
+              type="time"
+              value={tempTime || ""}
+              onChange={handleInputChange}
+              onBlur={() => handleBlur(dateKey)}
+            />
+          </>
+        ) : (
+          hoveredCard === dateKey && (
+            <button
+              className={styles.addCta}
+              onClick={() => toggleInput(dateKey)}
+            >
+              Add time
+            </button>
+          )
+        )}
+      </div>
     </div>
   );
 };

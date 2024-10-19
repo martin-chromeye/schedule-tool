@@ -1,0 +1,52 @@
+.card {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(var(--size-m) + 3px);
+}
+
+.heading {
+  margin: 0;
+  font-size: calc(var(--size-l) + 2px);
+  text-align: center;
+
+  &Primary {
+    font-weight: 700;
+  }
+
+  &Secondary {
+    font-weight: 400;
+  }
+}
+
+.cardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-m);
+  height: 286px;
+  background-color: var(--color-gray-7);
+
+  &Hovered {
+    background-color: var(--color-gray-2);
+  }
+}
+
+.addCta {
+  margin: 0;
+  padding: 13px 39px;
+  outline: 0;
+  border: 0;
+  background-color: var(--color-gray-5);
+  color: var(--color-white);
+  font-size: calc(var(--size-l) + 2px);
+  font-family: "Inter";
+  font-weight: 400;
+
+  @media (max-width: 1220px) {
+    padding: var(--size-s) var(--size-xl);
+  }
+}

@@ -6,7 +6,6 @@ import { Navigation } from "swiper/modules";
 import { addClass } from "../../utils/addClass";
 import { Swiper as SwiperType } from "swiper";
 import { Icon } from "../Icon";
-
 import styles from "./Carousel.module.scss";
 import { Card } from "../Card";
 
@@ -44,7 +43,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     let newStartIndex = 0;
 
     if (isNextDisabled) {
-      newStartIndex = slides - 7 - 7;
+      newStartIndex = slides - 14; // 14 because slided are moves -7 and -7 to start from index on prev options
     } else {
       newStartIndex = Math.max(startIndex - 7, 0);
     }
