@@ -116,9 +116,11 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
       >
         {dates.map((date, index) => {
           const dateKey = date.toISOString().split("T")[0]; // Key for storing time
-          const formattedDate = date.toLocaleDateString("en-GB"); // Format: DD.MM.YYYY
+          const formattedDate = date
+            .toLocaleDateString("en-GB")
+            .replace(/\//g, ".");
           const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
-          const dayTimes = times[dateKey] || []; // Get the stored times for this date
+          const dayTimes = times[dateKey] || [];
 
           return (
             <SwiperSlide key={index}>

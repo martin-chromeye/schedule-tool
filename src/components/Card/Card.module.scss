@@ -26,7 +26,6 @@
 .cardWrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--size-m);
   height: 286px;
   background-color: var(--color-gray-7);
 
@@ -45,8 +44,75 @@
   font-size: calc(var(--size-l) + 2px);
   font-family: "Inter";
   font-weight: 400;
+  cursor: pointer;
 
-  @media (max-width: 1220px) {
+  @media (max-width: 1240px) {
     padding: var(--size-s) var(--size-xl);
+  }
+}
+
+.input,
+.addedTime {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-accent);
+  font-size: calc(var(--size-l) + 2px);
+  padding: calc(var(--size-m) - 2px);
+  color: var(--color-accent);
+  font-family: "Inter";
+  background-color: var(--color-white);
+  height: 48px;
+  margin-bottom: var(--size-m);
+
+  @media (max-width: 1240px) {
+    padding: calc(var(--size-s) - 2px);
+    height: var(--size-xxl);
+    margin-bottom: var(--size-s);
+    font-size: var(--size-l);
+  }
+}
+
+.addedTime {
+  position: relative;
+
+  &:hover {
+    .removeCta {
+      display: flex;
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+    }
+  }
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(26%) sepia(56%) saturate(5045%) hue-rotate(296deg)
+    brightness(90%) contrast(103%);
+  cursor: pointer;
+}
+
+.timesWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.removeCta {
+  display: none;
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  background-color: transparent;
+  border: 0;
+}
+
+.cancelIcon {
+  width: 30px;
+  aspect-ratio: 1/1;
+  flex-shrink: 0;
+  fill: var(--color-accent);
+
+  @media (max-width: 1240px) {
+    width: 16px;
   }
 }

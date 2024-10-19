@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Card.module.scss";
 import { addClass } from "../../utils/addClass";
+import { Icon } from "../Icon";
 
 type Props = {
   dayOfWeek: string;
@@ -79,12 +80,15 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
         onMouseLeave={() => setHoveredCard(null)}
       >
         {dayTimes.length > 0 && (
-          <div>
+          <div className={styles.timesWrapper}>
             {dayTimes.map((time, i) => (
-              <div key={i}>
+              <div className={styles.addedTime} key={i}>
                 <span>{time}</span>
-                <button onClick={() => handleRemoveTime(dateKey, time)}>
-                  Remove
+                <button
+                  className={styles.removeCta}
+                  onClick={() => handleRemoveTime(dateKey, time)}
+                >
+                  <Icon className={styles.cancelIcon} name="cancel-icon" />
                 </button>
               </div>
             ))}
@@ -94,6 +98,7 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
           <>
             <input
               type="time"
+              className={styles.input}
               value={tempTime || ""}
               onChange={handleInputChange}
               onBlur={() => handleBlur(dateKey)}
