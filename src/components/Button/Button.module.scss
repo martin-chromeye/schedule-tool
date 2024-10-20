@@ -1,0 +1,38 @@
+.button {
+  margin: 0;
+  padding: 13px 17px;
+  outline: 0;
+  border: 0;
+  background-color: transparent;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--color-white);
+  font-size: calc(var(--size-l) + 2px);
+  font-family: "Inter";
+  font-weight: 700;
+  text-align: center;
+  max-width: 160px;
+  width: 100%;
+  transition: opacity 0.3s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}
+
+.primary {
+  background-color: var(--color-accent);
+}
+
+.secondary {
+  background-color: var(--color-gray-6);
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 30%;
+  cursor: default;
+}

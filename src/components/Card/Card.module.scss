@@ -28,10 +28,27 @@
   flex-direction: column;
   height: 286px;
   background-color: var(--color-gray-7);
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox: Use a thin scrollbar */
+  scrollbar-color: var(--color-accent) var(--color-gray-7); /* Firefox: Custom scrollbar color */
 
   &Hovered {
     background-color: var(--color-gray-2);
   }
+}
+
+/* For WebKit browsers (Chrome, Safari) */
+.cardWrapper::-webkit-scrollbar {
+  width: var(--size-s);
+}
+
+.cardWrapper::-webkit-scrollbar-thumb {
+  background-color: var(--color-accent); /* Color of the scrollbar handle */
+  // border-radius: 4px; /* Rounding the scrollbar edges */
+}
+
+.cardWrapper::-webkit-scrollbar-track {
+  background-color: var(--color-gray-7); /* Color of the scrollbar track */
 }
 
 .addCta {
@@ -58,7 +75,7 @@
   justify-content: center;
   border: 1px solid var(--color-accent);
   font-size: calc(var(--size-l) + 2px);
-  padding: calc(var(--size-m) - 2px);
+  padding: var(--size-m);
   color: var(--color-accent);
   font-family: "Inter";
   background-color: var(--color-white);
@@ -81,7 +98,7 @@
       display: flex;
       cursor: pointer;
       position: absolute;
-      right: 10px;
+      right: calc(var(--size-m) - 2px);
     }
   }
 }

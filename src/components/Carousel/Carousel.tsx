@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+import { Navigation, Scrollbar, FreeMode, Mousewheel } from "swiper/modules";
 import { addClass } from "../../utils/addClass";
 import { Swiper as SwiperType } from "swiper";
 import { Icon } from "../Icon";
 import styles from "./Carousel.module.scss";
 import { Card } from "../Card";
+import Actions from "../Actions/Actions";
 
 type Props = {
   slides: number;
@@ -103,19 +104,26 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         </div>
       )}
       <Swiper
-        modules={[Navigation]}
+        className={styles.swiper}
+        modules={[Navigation, Scrollbar, FreeMode, Mousewheel]}
         onSwiper={setSwiperInstance}
-        allowTouchMove={false}
+        freeMode={true}
+        centeredSlidesBounds={true}
+        scrollbar={{
+          hide: false,
+          draggable: true,
+        }}
+        mousewheel={true}
+        // allowTouchMove={false}
         navigation={{
           nextEl: ".js-swiper-button-next",
           prevEl: ".js-swiper-button-prev",
         }}
         spaceBetween={12}
         slidesPerView={Math.min(slides, 7)}
-        className="carousel js-carousel"
       >
         {dates.map((date, index) => {
-          const dateKey = date.toISOString().split("T")[0]; // Key for storing time
+          const dateKey = date.toISOString().split("T")[0];
           const formattedDate = date
             .toLocaleDateString("en-GB")
             .replace(/\//g, ".");
@@ -135,6 +143,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
           );
         })}
       </Swiper>
+      <Actions />
     </section>
   );
 };

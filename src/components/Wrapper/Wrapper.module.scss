@@ -1,5 +1,5 @@
 .wrapper {
-  width: min(100% - 88px);
+  width: min(100% - 88px, 1192px);
   margin-inline: auto;
 
   @media (max-width: 1024px) {
