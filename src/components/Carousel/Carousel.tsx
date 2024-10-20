@@ -21,7 +21,8 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [startIndex, setStartIndex] = useState<number>(0);
   const [isPrevDisabled, setIsPrevDisabled] = useState<boolean>(true);
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false);
-
+  const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
+  const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
   // State to store times for each day
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
 
@@ -80,6 +81,21 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   };
 
   const dates = dateArray();
+
+  useEffect(() => {
+    const allHaveTimes = dates.every((date) => {
+      const dateKey = date.toISOString().split("T")[0];
+      return times[dateKey] && times[dateKey].length > 0;
+    });
+    setAllDaysHaveTime(allHaveTimes);
+  }, [times, dates]);
+
+  useEffect(() => {
+    const hasAnyTime = Object.values(times).some(
+      (dayTimes) => dayTimes.length > 0
+    );
+    setHasAtLeastOneTime(hasAnyTime);
+  }, [times]);
 
   return (
     <section className={styles.container}>
@@ -143,7 +159,11 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
           );
         })}
       </Swiper>
-      <Actions />
+      <Actions
+        hasAtLeastOneTime={hasAtLeastOneTime}
+        allDaysHaveTime={allDaysHaveTime}
+        setTimes={setTimes}
+      />
     </section>
   );
 };

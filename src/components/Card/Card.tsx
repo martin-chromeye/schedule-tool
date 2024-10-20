@@ -74,7 +74,6 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
       <div
         className={addClass(
           styles.cardWrapper,
-          hoveredCard === dateKey ? styles.cardWrapperHovered : ""
         )}
         onMouseEnter={() => setHoveredCard(dateKey)}
         onMouseLeave={() => setHoveredCard(null)}

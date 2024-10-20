@@ -32,8 +32,10 @@
   scrollbar-width: thin; /* Firefox: Use a thin scrollbar */
   scrollbar-color: var(--color-accent) var(--color-gray-7); /* Firefox: Custom scrollbar color */
 
-  &Hovered {
-    background-color: var(--color-gray-2);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-gray-2);
+    }
   }
 }
 
@@ -62,8 +64,16 @@
   font-family: "Inter";
   font-weight: 400;
   cursor: pointer;
+  transition: opacity 0.3s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 
   @media (max-width: 1240px) {
+    font-size: var(--size-l);
     padding: var(--size-s) var(--size-xl);
   }
 }
