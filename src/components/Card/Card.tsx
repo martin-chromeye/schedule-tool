@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Card.module.scss";
 import { addClass } from "../../utils/addClass";
 import { Icon } from "../Icon";
@@ -15,10 +15,26 @@ type Props = {
   dateKey: string;
 };
 
-const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
+const Card = ({
+  dayOfWeek,
+  date,
+  dayTimes,
+  setTimes,
+  dateKey,
+}: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null); // State for hovered card
-  const [tempTime, setTempTime] = useState<string | null>(null); // Temporary state for input
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [tempTime, setTempTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    setTimes((prevTimes) => {
+      const updatedTimes = { ...prevTimes };
+      if (!updatedTimes[dateKey]) {
+        updatedTimes[dateKey] = [];
+      }
+      return updatedTimes;
+    });
+  }, [dateKey, setTimes]);
 
   const handleTimeChange = (dateKey: string, time: string) => {
     setTimes((prevTimes) => {
@@ -30,10 +46,9 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
         [dateKey]: updatedTimes,
       };
     });
-    setTempTime(null); // Reset temporary time after saving
-    setShowInput((prev) => ({ ...prev, [dateKey]: false })); // Hide input after saving time
+    setTempTime(null);
+    setShowInput((prev) => ({ ...prev, [dateKey]: false }));
   };
-
   const handleRemoveTime = (dateKey: string, time: string) => {
     setTimes((prevTimes) => ({
       ...prevTimes,
@@ -46,10 +61,7 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
   };
 
   const toggleInput = (dateKey: string) => {
-    setShowInput((prev) => ({
-      ...prev,
-      [dateKey]: !prev[dateKey],
-    }));
+    setShowInput((prev) => ({ ...prev, [dateKey]: !prev[dateKey] }));
     if (!showInput[dateKey]) {
       setTempTime(null);
     }
@@ -72,9 +84,7 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
         </p>
       </div>
       <div
-        className={addClass(
-          styles.cardWrapper,
-        )}
+        className={addClass(styles.cardWrapper)}
         onMouseEnter={() => setHoveredCard(dateKey)}
         onMouseLeave={() => setHoveredCard(null)}
       >

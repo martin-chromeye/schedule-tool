@@ -6,20 +6,16 @@ import styles from "./Actions.module.scss";
 type Props = {
   allDaysHaveTime: boolean;
   hasAtLeastOneTime: boolean;
-  setTimes: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: string[];
-    }>
-  >;
+  handleReset: () => void;
 };
 
-const Actions = ({ allDaysHaveTime, hasAtLeastOneTime, setTimes }: Props) => {
+const Actions = ({
+  allDaysHaveTime,
+  hasAtLeastOneTime,
+  handleReset,
+}: Props) => {
   const handleAutocompleteClick = () => {
     console.log("Autocomplete button clicked");
-  };
-
-  const handleReset = () => {
-    setTimes({});
   };
 
   return (

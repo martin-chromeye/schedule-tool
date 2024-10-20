@@ -23,8 +23,19 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [isNextDisabled, setIsNextDisabled] = useState<boolean>(false);
   const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
   const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
-  // State to store times for each day
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
+  console.log('times: ', times);
+
+  const handleReset = () => {
+    setTimes((prevTimes) => {
+      const updatedTimes = { ...prevTimes };
+      // Reset each date key to an empty array
+      for (const key in updatedTimes) {
+        updatedTimes[key] = [];
+      }
+      return updatedTimes;
+    });
+  };
 
   const handleNext = () => {
     if (isNextDisabled) return;
@@ -54,21 +65,17 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   };
 
   useEffect(() => {
-    // Reset swiper and startIndex when startDate or endDate changes
     setStartIndex(0);
     swiperInstance?.slideTo(0);
-
-    // Update the disabled state based on current startIndex and slides
     setIsPrevDisabled(true);
     setIsNextDisabled(slides <= 7);
-  }, [startDate, endDate, swiperInstance, slides]);
+  }, [startDate, endDate, slides, swiperInstance]); // Removed swiperInstance dependency
 
   useEffect(() => {
     setIsPrevDisabled(startIndex === 0);
     setIsNextDisabled(startIndex + 7 >= slides);
   }, [startIndex, slides]);
 
-  // Generate an array of dates between startDate and endDate
   const dateArray = () => {
     if (!startDate || !endDate) return [];
     const dates = [];
@@ -160,9 +167,9 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         })}
       </Swiper>
       <Actions
-        hasAtLeastOneTime={hasAtLeastOneTime}
         allDaysHaveTime={allDaysHaveTime}
-        setTimes={setTimes}
+        hasAtLeastOneTime={hasAtLeastOneTime}
+        handleReset={handleReset}
       />
     </section>
   );
