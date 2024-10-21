@@ -24,7 +24,6 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
   const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
-  console.log("times: ", times);
   const [hoveredTimes, setHoveredTimes] = useState<{
     [key: string]: string[];
   } | null>(null);
@@ -59,7 +58,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     let newStartIndex = 0;
 
     if (isNextDisabled) {
-      newStartIndex = slides - 14; // 14 because slided are moves -7 and -7 to start from index on prev options
+      newStartIndex = slides - 14; // 14 because slides are moved -7 and -7 to start from index on prev options
     } else {
       newStartIndex = Math.max(startIndex - 7, 0);
     }
@@ -72,7 +71,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     swiperInstance?.slideTo(0);
     setIsPrevDisabled(true);
     setIsNextDisabled(slides <= 7);
-  }, [startDate, endDate, slides, swiperInstance]); // Removed swiperInstance dependency
+  }, [startDate, endDate, slides, swiperInstance]);
 
   useEffect(() => {
     setIsPrevDisabled(startIndex === 0);
@@ -111,6 +110,36 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
       return isChanged ? newTimes : prevTimes;
     });
   }, [startDate, endDate, dates]);
+
+  useEffect(() => {
+    const updateTimes = () => {
+      if (!startDate || !endDate) return;
+
+      const newTimes: { [key: string]: string[] } = {};
+      const newDateKeys: string[] = [];
+
+      for (
+        let d = new Date(startDate);
+        d <= new Date(endDate);
+        d.setDate(d.getDate() + 1)
+      ) {
+        newDateKeys.push(d.toISOString().split("T")[0]);
+      }
+
+      newDateKeys.forEach((newKey, index) => {
+        const oldKey = Object.keys(times)[index];
+        if (oldKey) {
+          newTimes[newKey] = times[oldKey] || [];
+        } else {
+          newTimes[newKey] = [];
+        }
+      });
+
+      setTimes(newTimes);
+    };
+
+    updateTimes();
+  }, [startDate, endDate]);
 
   useEffect(() => {
     const allHaveTimes = dates.every((date) => {
@@ -193,9 +222,9 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         allDaysHaveTime={allDaysHaveTime}
         hasAtLeastOneTime={hasAtLeastOneTime}
         handleReset={handleReset}
-        times={times} // Pass times to Actions
-        setTimes={setTimes} // Pass setTimes to Actions
-        dates={dates} // Pass the date array to Actions
+        times={times}
+        setTimes={setTimes}
+        dates={dates}
         setHoveredTimes={setHoveredTimes}
         hoveredTimes={hoveredTimes}
         setIsAutocompleteUsed={setIsAutocompleteUsed}
