@@ -24,12 +24,10 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
   const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
-  console.log('times: ', times);
 
   const handleReset = () => {
     setTimes((prevTimes) => {
       const updatedTimes = { ...prevTimes };
-      // Reset each date key to an empty array
       for (const key in updatedTimes) {
         updatedTimes[key] = [];
       }
@@ -137,7 +135,6 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
           draggable: true,
         }}
         mousewheel={true}
-        // allowTouchMove={false}
         navigation={{
           nextEl: ".js-swiper-button-next",
           prevEl: ".js-swiper-button-prev",
@@ -170,6 +167,9 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         allDaysHaveTime={allDaysHaveTime}
         hasAtLeastOneTime={hasAtLeastOneTime}
         handleReset={handleReset}
+        times={times} // Pass times to Actions
+        setTimes={setTimes} // Pass setTimes to Actions
+        dates={dates} // Pass the date array to Actions
       />
     </section>
   );
