@@ -24,6 +24,10 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
   const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
+  const [hoveredTimes, setHoveredTimes] = useState<{
+    [key: string]: string[];
+  } | null>(null);
+  const [isAutocompleteUsed, setIsAutocompleteUsed] = useState<boolean>(false);
 
   const handleReset = () => {
     setTimes((prevTimes) => {
@@ -148,7 +152,8 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
             .toLocaleDateString("en-GB")
             .replace(/\//g, ".");
           const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
-          const dayTimes = times[dateKey] || [];
+          const dayTimes =
+            (hoveredTimes && hoveredTimes[dateKey]) || times[dateKey] || [];
 
           return (
             <SwiperSlide key={index}>
@@ -170,6 +175,10 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         times={times} // Pass times to Actions
         setTimes={setTimes} // Pass setTimes to Actions
         dates={dates} // Pass the date array to Actions
+        setHoveredTimes={setHoveredTimes}
+        hoveredTimes={hoveredTimes}
+        setIsAutocompleteUsed={setIsAutocompleteUsed}
+        isAutocompleteUsed={isAutocompleteUsed}
       />
     </section>
   );

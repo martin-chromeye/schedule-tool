@@ -10,6 +10,16 @@ type Props = {
   allDaysHaveTime: boolean;
   hasAtLeastOneTime: boolean;
   handleReset: () => void;
+  setHoveredTimes: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: string[];
+    } | null>
+  >;
+  hoveredTimes: {
+    [key: string]: string[];
+  } | null;
+  setIsAutocompleteUsed: React.Dispatch<React.SetStateAction<boolean>>;
+  isAutocompleteUsed: boolean;
 };
 
 const Actions = ({
@@ -19,11 +29,11 @@ const Actions = ({
   allDaysHaveTime,
   hasAtLeastOneTime,
   handleReset,
+  setHoveredTimes,
+  hoveredTimes,
+  isAutocompleteUsed,
+  setIsAutocompleteUsed,
 }: Props) => {
-  const [hoveredTimes, setHoveredTimes] = useState<{
-    [key: string]: string[];
-  } | null>(null);
-
   const getTemplate = (times: { [key: string]: string[] }) => {
     // Convert the times object into an array of [key, value] pairs and sort by date (key)
     const timeEntries = Object.entries(times).sort(([dateA], [dateB]) => {
@@ -64,7 +74,6 @@ const Actions = ({
     if (applyTemplate) {
       const template = getTemplate(times);
       const filledTimes = fillTimesWithTemplate(template, times, dates);
-      console.log("filledTimes: ", filledTimes);
       setHoveredTimes(filledTimes);
     } else {
       setHoveredTimes(null); // Reset when hover is removed
@@ -74,20 +83,26 @@ const Actions = ({
   const handleAutocompleteClick = () => {
     if (hoveredTimes) {
       setTimes(hoveredTimes); // Save the hovered state permanently
+      setIsAutocompleteUsed(true);
     }
+  };
+
+  const handleResetClick = () => {
+    handleReset();
+    setIsAutocompleteUsed(false);
   };
 
   return (
     <div className={styles.container}>
       <Button
         disabled={!hasAtLeastOneTime}
-        onClick={handleReset}
+        onClick={handleResetClick}
         variant="secondary"
       >
         Reset
       </Button>
       <Button
-        disabled={!hasAtLeastOneTime}
+        disabled={!hasAtLeastOneTime || isAutocompleteUsed}
         onMouseEnter={() => handleAutocompleteHover(true)} // Apply template on hover
         onMouseLeave={() => handleAutocompleteHover(false)} // Remove template on hover leave
         onClick={handleAutocompleteClick} // Save permanently on click
