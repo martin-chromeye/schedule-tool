@@ -13,9 +13,17 @@ type Props = {
     }>
   >;
   dateKey: string;
+  isAutocompleteUsed: boolean;
 };
 
-const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
+const Card = ({
+  dayOfWeek,
+  date,
+  dayTimes,
+  setTimes,
+  dateKey,
+  isAutocompleteUsed,
+}: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [tempTime, setTempTime] = useState<string | null>(null);
@@ -88,14 +96,23 @@ const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
         </p>
       </div>
       <div
-        className={addClass(styles.cardWrapper)}
+        className={addClass(
+          styles.cardWrapper,
+          isAutocompleteUsed ? styles.isAutocompleteUsed : ""
+        )}
         onMouseEnter={() => setHoveredCard(dateKey)}
         onMouseLeave={() => setHoveredCard(null)}
       >
         {dayTimes.length > 0 && (
           <div className={styles.timesWrapper}>
             {dayTimes.map((time, i) => (
-              <div className={styles.addedTime} key={i}>
+              <div
+                className={addClass(
+                  styles.addedTime,
+                  isAutocompleteUsed ? styles.isAutocompleteUsed : ""
+                )}
+                key={i}
+              >
                 <span>{time}</span>
                 <button
                   className={styles.removeCta}

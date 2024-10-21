@@ -143,3 +143,9 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     width: 16px;
   }
 }
+
+.isAutocompleteUsed {
+  color: var(--color-gray-6);
+  border-color: var(--color-gray-6);
+  fill: var(--color-gray-6);
+}

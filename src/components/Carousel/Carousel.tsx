@@ -213,6 +213,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
                 dayTimes={dayTimes}
                 setTimes={setTimes}
                 dateKey={dateKey}
+                isAutocompleteUsed={isAutocompleteUsed}
               />
             </SwiperSlide>
           );
