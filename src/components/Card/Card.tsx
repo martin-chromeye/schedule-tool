@@ -15,13 +15,7 @@ type Props = {
   dateKey: string;
 };
 
-const Card = ({
-  dayOfWeek,
-  date,
-  dayTimes,
-  setTimes,
-  dateKey,
-}: Props) => {
+const Card = ({ dayOfWeek, date, dayTimes, setTimes, dateKey }: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [tempTime, setTempTime] = useState<string | null>(null);
@@ -49,6 +43,7 @@ const Card = ({
     setTempTime(null);
     setShowInput((prev) => ({ ...prev, [dateKey]: false }));
   };
+
   const handleRemoveTime = (dateKey: string, time: string) => {
     setTimes((prevTimes) => ({
       ...prevTimes,
@@ -70,6 +65,15 @@ const Card = ({
   const handleBlur = (dateKey: string) => {
     if (tempTime) {
       handleTimeChange(dateKey, tempTime);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && tempTime) {
+      handleTimeChange(dateKey, tempTime);
+      setShowInput((prev) => ({ ...prev, [dateKey]: false }));
+      setTempTime(null);
+      toggleInput(dateKey);
     }
   };
 
@@ -111,6 +115,7 @@ const Card = ({
               value={tempTime || ""}
               onChange={handleInputChange}
               onBlur={() => handleBlur(dateKey)}
+              onKeyDown={handleKeyDown}
             />
           </>
         ) : (
