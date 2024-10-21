@@ -1,8 +1,11 @@
 .container {
+  margin-block: 37px 33px;
+  width: 100%;
+}
+
+.wrapper {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--size-m);
-  width: 100%;
-  margin-block: 37px 33px;
 }

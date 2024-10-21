@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../Button";
 
 import styles from "./Actions.module.scss";
+import { isSorted } from "../../utils/isSorted";
+import { HintMsg } from "../HintMsg";
 
 type Props = {
   times: { [key: string]: string[] };
@@ -34,6 +36,24 @@ const Actions = ({
   isAutocompleteUsed,
   setIsAutocompleteUsed,
 }: Props) => {
+  const [unsortedDays, setUnsortedDays] = useState<string[]>([]);
+  const [uploadDisabled, setUploadDisabled] = useState(true);
+
+  useEffect(() => {
+    const unsorted = Object.entries(times)
+      .filter(([_, timesForDay]) => timesForDay.length > 0)
+      .filter(([_, timesForDay]) => !isSorted(timesForDay))
+      .map(([day]) => {
+        const date = new Date(day);
+        date.setDate(date.getDate() + 1);
+
+        return date.toLocaleDateString("en-GB").replace(/\//g, ".");
+      });
+
+    setUnsortedDays(unsorted);
+    setUploadDisabled(unsorted.length > 0);
+  }, [times, allDaysHaveTime]);
+
   const getTemplate = (times: { [key: string]: string[] }) => {
     // Convert the times object into an array of [key, value] pairs and sort by date (key)
     const timeEntries = Object.entries(times).sort(([dateA], [dateB]) => {
@@ -49,7 +69,7 @@ const Actions = ({
         .reverse()
         .findIndex(([, times]) => times.length > 0);
 
-    // Return the slice of timeEntries from the first to the last non-empty entry
+    // Return the slice of timeEntries from the first to the last non-empty entry as template
     return timeEntries.slice(0, lastNonEmptyIndex + 1);
   };
 
@@ -94,24 +114,30 @@ const Actions = ({
 
   return (
     <div className={styles.container}>
-      <Button
-        disabled={!hasAtLeastOneTime}
-        onClick={handleResetClick}
-        variant="secondary"
-      >
-        Reset
-      </Button>
-      <Button
-        disabled={!hasAtLeastOneTime || isAutocompleteUsed}
-        onMouseEnter={() => handleAutocompleteHover(true)} // Apply template on hover
-        onMouseLeave={() => handleAutocompleteHover(false)} // Remove template on hover leave
-        onClick={handleAutocompleteClick} // Save permanently on click
-      >
-        Autocomplete
-      </Button>
-      <Button variant="secondary" disabled={!allDaysHaveTime}>
-        Upload
-      </Button>
+      {unsortedDays.length > 0 && <HintMsg unsortedDays={unsortedDays} />}
+      <div className={styles.wrapper}>
+        <Button
+          disabled={!hasAtLeastOneTime}
+          onClick={handleResetClick}
+          variant="secondary"
+        >
+          Reset
+        </Button>
+        <Button
+          disabled={!hasAtLeastOneTime || isAutocompleteUsed}
+          onMouseEnter={() => handleAutocompleteHover(true)} // Apply template on hover
+          onMouseLeave={() => handleAutocompleteHover(false)} // Remove template on hover leave
+          onClick={handleAutocompleteClick} // Save permanently on click
+        >
+          Autocomplete
+        </Button>
+        <Button
+          variant="secondary"
+          disabled={!allDaysHaveTime || uploadDisabled}
+        >
+          Upload
+        </Button>
+      </div>
     </div>
   );
 };
