@@ -25,7 +25,13 @@ const Homepage = (props: Props) => {
           setEndDate={setEndDate}
         />
         {slides ? (
-          <Carousel slides={slides} startDate={startDate} endDate={endDate} />
+          <Carousel
+            slides={slides}
+            startDate={startDate}
+            endDate={endDate}
+            setStartDate={setStartDate}
+            setEndDate={setEndDate}
+          />
         ) : null}
       </Wrapper>
     </MainContainer>

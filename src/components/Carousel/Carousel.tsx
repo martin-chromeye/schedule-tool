@@ -16,9 +16,17 @@ type Props = {
   slides: number;
   startDate: Date | undefined;
   endDate: Date | undefined;
+  setStartDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
+  setEndDate: React.Dispatch<React.SetStateAction<Date | undefined>>;
 };
 
-const Carousel = ({ slides, startDate, endDate }: Props) => {
+const Carousel = ({
+  slides,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate,
+}: Props) => {
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
   const [startIndex, setStartIndex] = useState<number>(0);
   const [isPrevDisabled, setIsPrevDisabled] = useState<boolean>(true);
@@ -39,6 +47,11 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
       }
       return updatedTimes;
     });
+  };
+
+  const handleUpload = () => {
+    setStartDate(undefined);
+    setEndDate(undefined);
   };
 
   const handleNext = () => {
@@ -242,6 +255,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         hoveredTimes={hoveredTimes}
         setIsAutocompleteUsed={setIsAutocompleteUsed}
         isAutocompleteUsed={isAutocompleteUsed}
+        handleUpload={handleUpload}
       />
     </section>
   );

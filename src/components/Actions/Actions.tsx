@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../Button";
-
 import styles from "./Actions.module.scss";
 import { isSorted } from "../../utils/isSorted";
 import { HintMsg } from "../HintMsg";
+import { Modal } from "../Modal";
 
 type Props = {
   times: { [key: string]: string[] };
@@ -12,6 +12,7 @@ type Props = {
   allDaysHaveTime: boolean;
   hasAtLeastOneTime: boolean;
   handleReset: () => void;
+  handleUpload: () => void;
   setHoveredTimes: React.Dispatch<
     React.SetStateAction<{
       [key: string]: string[];
@@ -35,9 +36,11 @@ const Actions = ({
   hoveredTimes,
   isAutocompleteUsed,
   setIsAutocompleteUsed,
+  handleUpload,
 }: Props) => {
   const [unsortedDays, setUnsortedDays] = useState<string[]>([]);
   const [uploadDisabled, setUploadDisabled] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const unsorted = Object.entries(times)
@@ -69,7 +72,6 @@ const Actions = ({
         .reverse()
         .findIndex(([, times]) => times.length > 0);
 
-    // Return the slice of timeEntries from the first to the last non-empty entry as template
     return timeEntries.slice(0, lastNonEmptyIndex + 1);
   };
 
@@ -112,6 +114,15 @@ const Actions = ({
     setIsAutocompleteUsed(false);
   };
 
+  const handleUploadClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCreatePlanClick = () => {
+    setIsModalOpen(false);
+    handleUpload();
+  };
+
   return (
     <div className={styles.container}>
       {unsortedDays.length > 0 && <HintMsg unsortedDays={unsortedDays} />}
@@ -125,19 +136,28 @@ const Actions = ({
         </Button>
         <Button
           disabled={!hasAtLeastOneTime || isAutocompleteUsed}
-          onMouseEnter={() => handleAutocompleteHover(true)} // Apply template on hover
-          onMouseLeave={() => handleAutocompleteHover(false)} // Remove template on hover leave
-          onClick={handleAutocompleteClick} // Save permanently on click
+          onMouseEnter={() => handleAutocompleteHover(true)}
+          onMouseLeave={() => handleAutocompleteHover(false)}
+          onClick={handleAutocompleteClick}
         >
           Autocomplete
         </Button>
         <Button
           variant="secondary"
           disabled={!allDaysHaveTime || uploadDisabled}
+          onClick={handleUploadClick}
         >
           Upload
         </Button>
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <h2 className={styles.modalHeader}>
+          Schedule <br /> successfully created.
+        </h2>
+        <Button customWidth onClick={handleCreatePlanClick}>
+          Create another plan
+        </Button>
+      </Modal>
     </div>
   );
 };

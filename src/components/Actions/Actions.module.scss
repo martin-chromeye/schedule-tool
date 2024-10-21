@@ -9,3 +9,10 @@
   justify-content: flex-end;
   gap: var(--size-m);
 }
+
+.modalHeader {
+  margin: 0 0 39px 0;
+  font-size: var(--size-xxl);
+  font-weight: 400;
+  text-align: center;
+}
