@@ -9,6 +9,8 @@ import { Icon } from "../Icon";
 import styles from "./Carousel.module.scss";
 import { Card } from "../Card";
 import Actions from "../Actions/Actions";
+import { SWIPE_OPTION } from "../../constants/swipeOption";
+import { PAGE_SWIDES } from "../../constants/pageSwides";
 
 type Props = {
   slides: number;
@@ -41,12 +43,12 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
 
   const handleNext = () => {
     if (isNextDisabled) return;
-    const newStartIndex = startIndex + 7; // Move by 7 for the next week
+    const newStartIndex = startIndex + SWIPE_OPTION;
     if (newStartIndex < slides) {
       setStartIndex(newStartIndex);
       swiperInstance?.slideTo(newStartIndex);
     } else {
-      const lastIndex = Math.max(0, slides - 7);
+      const lastIndex = Math.max(0, slides - SWIPE_OPTION);
       setStartIndex(lastIndex);
       swiperInstance?.slideTo(lastIndex);
     }
@@ -60,7 +62,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     if (isNextDisabled) {
       newStartIndex = slides - 14; // 14 because slides are moved -7 and -7 to start from index on prev options
     } else {
-      newStartIndex = Math.max(startIndex - 7, 0);
+      newStartIndex = Math.max(startIndex - SWIPE_OPTION, 0);
     }
     setStartIndex(newStartIndex);
     swiperInstance?.slideTo(newStartIndex);
@@ -70,12 +72,12 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     setStartIndex(0);
     swiperInstance?.slideTo(0);
     setIsPrevDisabled(true);
-    setIsNextDisabled(slides <= 7);
+    setIsNextDisabled(slides <= PAGE_SWIDES);
   }, [startDate, endDate, slides, swiperInstance]);
 
   useEffect(() => {
     setIsPrevDisabled(startIndex === 0);
-    setIsNextDisabled(startIndex + 7 >= slides);
+    setIsNextDisabled(startIndex + PAGE_SWIDES + 1 >= slides); //to compensate for start index
   }, [startIndex, slides]);
 
   const dateArray = () => {
@@ -156,9 +158,18 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
     setHasAtLeastOneTime(hasAnyTime);
   }, [times]);
 
+  const handleSlideChange = (swiper: SwiperType) => {
+    const currentIndex = swiper.activeIndex;
+    setStartIndex(currentIndex);
+
+    // Update arrow states
+    setIsPrevDisabled(currentIndex === 0);
+    setIsNextDisabled(currentIndex >= slides - 6);
+  };
+
   return (
     <section className={styles.container}>
-      {slides > 7 && (
+      {slides > PAGE_SWIDES && (
         <div className={styles.carouselActions}>
           <Icon
             className={`${addClass(
@@ -182,6 +193,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
         className={styles.swiper}
         modules={[Navigation, Scrollbar, FreeMode, Mousewheel]}
         onSwiper={setSwiperInstance}
+        onSlideChange={handleSlideChange}
         freeMode={true}
         centeredSlidesBounds={true}
         scrollbar={{
@@ -194,7 +206,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
           prevEl: ".js-swiper-button-prev",
         }}
         spaceBetween={12}
-        slidesPerView={Math.min(slides, 7)}
+        slidesPerView={Math.min(slides, PAGE_SWIDES)}
       >
         {dates.map((date, index) => {
           const dateKey = date.toISOString().split("T")[0];
