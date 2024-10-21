@@ -1,6 +1,6 @@
 import React from "react";
-import IcomoonReact from "icomoon-react";
 import iconSet from "./selection.json";
+import IcomoonReact from "icomoon-react";
 
 type Props = {
   name: string;

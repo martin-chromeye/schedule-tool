@@ -24,6 +24,7 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   const [allDaysHaveTime, setAllDaysHaveTime] = useState<boolean>(false);
   const [hasAtLeastOneTime, setHasAtLeastOneTime] = useState<boolean>(false);
   const [times, setTimes] = useState<{ [key: string]: string[] }>({});
+  console.log("times: ", times);
   const [hoveredTimes, setHoveredTimes] = useState<{
     [key: string]: string[];
   } | null>(null);
@@ -90,6 +91,26 @@ const Carousel = ({ slides, startDate, endDate }: Props) => {
   };
 
   const dates = dateArray();
+
+  useEffect(() => {
+    const dateKeysInRange = dates.map(
+      (date) => date.toISOString().split("T")[0]
+    );
+
+    setTimes((prevTimes) => {
+      const newTimes = { ...prevTimes };
+      let isChanged = false;
+
+      Object.keys(newTimes).forEach((key) => {
+        if (!dateKeysInRange.includes(key)) {
+          delete newTimes[key];
+          isChanged = true;
+        }
+      });
+
+      return isChanged ? newTimes : prevTimes;
+    });
+  }, [startDate, endDate, dates]);
 
   useEffect(() => {
     const allHaveTimes = dates.every((date) => {
