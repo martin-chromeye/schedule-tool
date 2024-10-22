@@ -11,6 +11,8 @@ import { Card } from "../Card";
 import Actions from "../Actions/Actions";
 import { SWIPE_OPTION } from "../../constants/swipeOption";
 import { PAGE_SWIDES } from "../../constants/pageSwides";
+import { scheduleTableRender } from "../../helpers/tableRendering";
+import { formatDate } from "../../utils/formatDate";
 
 type Props = {
   slides: number;
@@ -47,6 +49,7 @@ const Carousel = ({
       }
       return updatedTimes;
     });
+    setIsAutocompleteUsed(false);
   };
 
   const handleUpload = () => {
@@ -180,6 +183,8 @@ const Carousel = ({
     setIsNextDisabled(currentIndex + PAGE_SWIDES === slides);
   };
 
+  const { renderTableHeaders, renderTimesData } = scheduleTableRender(times);
+
   return (
     <section className={styles.container}>
       {slides > PAGE_SWIDES && (
@@ -223,9 +228,7 @@ const Carousel = ({
       >
         {dates.map((date, index) => {
           const dateKey = date.toISOString().split("T")[0];
-          const formattedDate = date
-            .toLocaleDateString("en-GB")
-            .replace(/\//g, ".");
+          const formattedDate = formatDate(date);
           const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
           const dayTimes =
             (hoveredTimes && hoveredTimes[dateKey]) || times[dateKey] || [];
@@ -257,6 +260,13 @@ const Carousel = ({
         isAutocompleteUsed={isAutocompleteUsed}
         handleUpload={handleUpload}
       />
+      {/* XLS TABLE */}
+      <div className={styles.xlsContainer}>
+        <table className={`${styles.tableXls} exportable`}>
+          <thead>{renderTableHeaders()}</thead>
+          <tbody>{renderTimesData()}</tbody>
+        </table>
+      </div>
     </section>
   );
 };

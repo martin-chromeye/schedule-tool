@@ -53,3 +53,21 @@
   opacity: 30%;
   pointer-events: none;
 }
+
+// ------------XLS-----------
+.xlsContainer {
+  display: none;
+}
+
+.tableXls {
+  border-collapse: collapse;
+  width: 100%;
+
+  td,
+  th {
+    background-color: var(--color-white);
+    padding: var(--size-s) var(--size-l);
+    font-size: var(--size-m);
+    text-align: center;
+  }
+}

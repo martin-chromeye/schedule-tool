@@ -148,4 +148,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   color: var(--color-gray-6);
   border-color: var(--color-gray-6);
   fill: var(--color-gray-6);
+
+  & .cancelIcon {
+    fill: var(--color-gray-6);
+  }
 }

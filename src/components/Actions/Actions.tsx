@@ -4,6 +4,8 @@ import styles from "./Actions.module.scss";
 import { isSorted } from "../../utils/isSorted";
 import { HintMsg } from "../HintMsg";
 import { Modal } from "../Modal";
+import { export_csv } from "../../helpers/export";
+import { formatDate } from "../../utils/formatDate";
 
 type Props = {
   times: { [key: string]: string[] };
@@ -41,6 +43,8 @@ const Actions = ({
   const [unsortedDays, setUnsortedDays] = useState<string[]>([]);
   const [uploadDisabled, setUploadDisabled] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const startDate = formatDate(dates[0]);
+  const lastDate = formatDate(dates[dates.length - 1]);
 
   useEffect(() => {
     const unsorted = Object.entries(times)
@@ -50,7 +54,7 @@ const Actions = ({
         const date = new Date(day);
         date.setDate(date.getDate() + 1);
 
-        return date.toLocaleDateString("en-GB").replace(/\//g, ".");
+        return formatDate(date);
       });
 
     setUnsortedDays(unsorted);
@@ -111,14 +115,14 @@ const Actions = ({
 
   const handleResetClick = () => {
     handleReset();
-    setIsAutocompleteUsed(false);
   };
 
   const handleUploadClick = () => {
+    export_csv(`График за период ${startDate}-${lastDate}`);
     setIsModalOpen(true);
   };
 
-  const handleCreatePlanClick = () => {
+  const handleModalCloseResetClick = () => {
     setIsModalOpen(false);
     handleUpload();
   };
@@ -150,11 +154,11 @@ const Actions = ({
           Upload
         </Button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={handleModalCloseResetClick}>
         <h2 className={styles.modalHeader}>
           Schedule <br /> successfully created.
         </h2>
-        <Button customWidth onClick={handleCreatePlanClick}>
+        <Button customWidth onClick={handleModalCloseResetClick}>
           Create another plan
         </Button>
       </Modal>
