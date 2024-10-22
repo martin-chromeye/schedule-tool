@@ -1,6 +1,18 @@
 .card {
   display: flex;
   flex-direction: column;
+  position: relative;
+
+  &.hover {
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+      background-color: var(--color-accent);
+    }
+  }
 }
 
 .header {

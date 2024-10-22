@@ -54,6 +54,16 @@
   pointer-events: none;
 }
 
+.message {
+  position: absolute;
+  bottom: -26px; //message height and design bottom positon
+  margin: 0;
+  font-size: calc(var(--size-l) + 2px);
+  color: var(--color-accent);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 // ------------XLS-----------
 .xlsContainer {
   display: none;

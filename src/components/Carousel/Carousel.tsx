@@ -13,6 +13,7 @@ import { SWIPE_OPTION } from "../../constants/swipeOption";
 import { PAGE_SWIDES } from "../../constants/pageSwides";
 import { scheduleTableRender } from "../../helpers/tableRendering";
 import { formatDate } from "../../utils/formatDate";
+import { getTemplateOrCopyStatus } from "../../utils/getTemplateOrCopyStatus";
 
 type Props = {
   slides: number;
@@ -232,6 +233,7 @@ const Carousel = ({
           const dayOfWeek = date.toLocaleString("en-US", { weekday: "long" });
           const dayTimes =
             (hoveredTimes && hoveredTimes[dateKey]) || times[dateKey] || [];
+          const status = getTemplateOrCopyStatus(dateKey, times, hoveredTimes);
 
           return (
             <SwiperSlide key={index}>
@@ -242,7 +244,12 @@ const Carousel = ({
                 setTimes={setTimes}
                 dateKey={dateKey}
                 isAutocompleteUsed={isAutocompleteUsed}
+                hover={hoveredTimes !== null ? true : false}
               />
+              {status === "template" && (
+                <p className={styles.message}>Template</p>
+              )}
+              {status === "copy" && <p className={styles.message}>Copy</p>}
             </SwiperSlide>
           );
         })}

@@ -14,6 +14,7 @@ type Props = {
   >;
   dateKey: string;
   isAutocompleteUsed: boolean;
+  hover: boolean;
 };
 
 const Card = ({
@@ -23,6 +24,7 @@ const Card = ({
   setTimes,
   dateKey,
   isAutocompleteUsed,
+  hover,
 }: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -86,7 +88,7 @@ const Card = ({
   };
 
   return (
-    <div className={styles.card}>
+    <div className={addClass(styles.card, hover ? styles.hover : "")}>
       <div className={styles.header}>
         <h3 className={addClass(styles.heading, styles.headingPrimary)}>
           {dayOfWeek}
