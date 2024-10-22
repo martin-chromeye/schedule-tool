@@ -1,3 +1,5 @@
+import { formatDate } from "../utils/formatDate";
+
 export const scheduleTableRender = (data: { [key: string]: string[] }) => {
   const inlineStyleTH = {
     backgroundColor: "#e11bb6",
@@ -12,13 +14,19 @@ export const scheduleTableRender = (data: { [key: string]: string[] }) => {
   const titles = Object.keys(data);
   const times = Object.values(data);
 
+  const addOneDay = (dateString: string): Date => {
+    const date = new Date(dateString);
+    date.setDate(date.getDate() + 1);
+    return date;
+  };
+
   const renderTableHeaders = () => {
     return (
       <tr>
         {titles.map((title: string, index: number) => {
           return (
             <th key={`${index}-${title}`} style={inlineStyleTH}>
-              {title}
+              {formatDate(addOneDay(title))}
             </th>
           );
         })}
