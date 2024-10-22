@@ -225,7 +225,17 @@ const Carousel = ({
           prevEl: ".js-swiper-button-prev",
         }}
         spaceBetween={12}
-        slidesPerView={Math.min(slides, PAGE_SWIDES)}
+        breakpoints={{
+          480: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+          1024: {
+            slidesPerView: Math.min(slides, PAGE_SWIDES),
+          },
+        }}
       >
         {dates.map((date, index) => {
           const dateKey = date.toISOString().split("T")[0];
@@ -247,10 +257,12 @@ const Carousel = ({
                 hover={hoveredTimes !== null ? true : false}
                 isCopy={status === "copy"}
               />
-              {status === "template" && (
+              {status === "template" && hoveredTimes && (
                 <p className={styles.message}>Template</p>
               )}
-              {status === "copy" && <p className={styles.message}>Copy</p>}
+              {status === "copy" && hoveredTimes && (
+                <p className={styles.message}>Copy</p>
+              )}
             </SwiperSlide>
           );
         })}
