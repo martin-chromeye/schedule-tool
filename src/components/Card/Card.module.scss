@@ -115,6 +115,11 @@
 .addedTime {
   position: relative;
 
+  &.isCopy {
+    border-color: var(--color-gray-4);
+    color: var(--color-gray-4);
+  }
+
   &:hover {
     .removeCta {
       display: flex;

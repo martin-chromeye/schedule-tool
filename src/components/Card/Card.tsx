@@ -15,6 +15,7 @@ type Props = {
   dateKey: string;
   isAutocompleteUsed: boolean;
   hover: boolean;
+  isCopy: boolean;
 };
 
 const Card = ({
@@ -25,6 +26,7 @@ const Card = ({
   dateKey,
   isAutocompleteUsed,
   hover,
+  isCopy,
 }: Props) => {
   const [showInput, setShowInput] = useState<{ [key: string]: boolean }>({});
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -111,7 +113,8 @@ const Card = ({
               <div
                 className={addClass(
                   styles.addedTime,
-                  isAutocompleteUsed ? styles.isAutocompleteUsed : ""
+                  isAutocompleteUsed ? styles.isAutocompleteUsed : "",
+                  isCopy ? styles.isCopy : ""
                 )}
                 key={i}
               >

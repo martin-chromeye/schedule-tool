@@ -245,6 +245,7 @@ const Carousel = ({
                 dateKey={dateKey}
                 isAutocompleteUsed={isAutocompleteUsed}
                 hover={hoveredTimes !== null ? true : false}
+                isCopy={status === "copy"}
               />
               {status === "template" && (
                 <p className={styles.message}>Template</p>
