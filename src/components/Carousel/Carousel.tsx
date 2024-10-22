@@ -90,7 +90,7 @@ const Carousel = ({
 
   useEffect(() => {
     setIsPrevDisabled(startIndex === 0);
-    setIsNextDisabled(startIndex + PAGE_SWIDES + 1 >= slides); //to compensate for start index
+    setIsNextDisabled(startIndex + PAGE_SWIDES >= slides);
   }, [startIndex, slides]);
 
   const dateArray = () => {
@@ -177,7 +177,7 @@ const Carousel = ({
 
     // Update arrow states
     setIsPrevDisabled(currentIndex === 0);
-    setIsNextDisabled(currentIndex >= slides - 6);
+    setIsNextDisabled(currentIndex + PAGE_SWIDES === slides);
   };
 
   return (
