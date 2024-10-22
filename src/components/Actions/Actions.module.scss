@@ -1,6 +1,10 @@
 .container {
   margin-block: 37px 33px;
   width: 100%;
+
+  @media (max-width: 640px) {
+    margin-block: var(--size-l);
+  }
 }
 
 .wrapper {
@@ -8,6 +12,11 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--size-m);
+  flex-wrap: wrap;
+
+  @media (max-width: 640px) {
+    justify-content: flex-start;
+  }
 }
 
 .modalHeader {

@@ -4,4 +4,8 @@
   justify-content: flex-end;
   padding-bottom: var(--size-s);
   font-size: var(--size-l);
+
+  @media (max-width: 640px) {
+    justify-content: flex-start;
+  }
 }

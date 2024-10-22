@@ -16,6 +16,12 @@
   width: 100%;
   transition: opacity 0.3s ease;
 
+  @media (max-width: 640px) {
+    padding: var(--size-s);
+    font-size: var(--size-l);
+    max-width: max-content;   
+  }
+
   @media (hover: hover) {
     &:hover {
       opacity: 0.8;

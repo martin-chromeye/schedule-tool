@@ -1,9 +1,12 @@
 .container {
   display: flex;
-  gap: var(--size-m);
   flex-wrap: wrap;
   position: relative;
   padding-bottom: calc(var(--size-m) + 2px);
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+  }
 
   :global(.react-datepicker-popper) {
     z-index: 2;
@@ -27,6 +30,15 @@
   display: flex;
   flex-direction: column;
   align-items: center; /* Ensure items are centered */
+  padding-right: var(--size-m);
+
+  @media (max-width: 640px) {
+    flex-direction: row;
+    padding-right: 0;
+    gap: 8px;
+    justify-content: space-between;
+    padding-bottom: var(--size-s);
+  }
 
   :global(.react-datepicker__close-icon) {
     &:after {
@@ -40,9 +52,17 @@
   margin: 0;
   padding-bottom: calc(var(--size-l) + 2px);
 
+  @media (max-width: 640px) {
+    padding-bottom: 0;
+  }
+
   &Secondary {
     align-self: flex-end;
     padding-bottom: calc(var(--size-l) - 2px);
+
+    @media (max-width: 640px) {
+      align-self: flex-start;
+    }
   }
 }
 
